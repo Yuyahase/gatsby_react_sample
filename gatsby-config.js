@@ -15,6 +15,7 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    // どのディレクトリをnodeとして加えるかを定義する
     {
       resolve: `gatsby-source-filesystem`,
       options: {
