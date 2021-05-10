@@ -4,8 +4,6 @@ const { createFilePath } = require(`gatsby-source-filesystem`)
 
 //Called when a new node is created. 
 exports.onCreateNode = ({ node, getNode, actions }) => {
-
-    console.log(getNode)
     //アクションオブジェクトからcreateNodeFieldを取り出す
     const { createNodeField } = actions
     // Ensures we are processing only markdown files
@@ -71,5 +69,32 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 previous,
             },
         })
+    })
+}
+//Let plugins extend/mutate the site’s webpack configuration.
+exports.onCreateWebpackConfig = ({
+    actions,
+}) => {
+    actions.setWebpackConfig({
+        module: {
+            rules: [
+                {
+                    //Include all modules that pass test assertion. 
+                    test: /\.s[ac]ss$/i,
+                    use: [
+                        // Creates `style` nodes from JS strings
+                        'style-loader',
+                        // Translates CSS into CommonJS
+                        'css-loader',
+                        // Compiles Sass to CSS
+                        'sass-loader',
+                    ],
+                },
+            ],
+        },
+        //Configure how modules are resolved. 
+        resolve: {
+            extensions: ['.js', '.jsx', '.scss']
+        }
     })
 }
